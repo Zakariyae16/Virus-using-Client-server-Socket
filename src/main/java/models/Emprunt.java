@@ -8,7 +8,6 @@ public class Emprunt {
     private int livreID;
     private Date dateRetour;
 
-    // Constructor
     public Emprunt(int idEmprunt, int userID, int livreID, Date dateRetour) {
         this.idEmprunt = idEmprunt;
         this.userID = userID;
@@ -16,7 +15,10 @@ public class Emprunt {
         this.dateRetour = dateRetour;
     }
 
-    // Getters and setters
+    public Emprunt() {
+
+    }
+
     public int getIdEmprunt() {
         return idEmprunt;
     }

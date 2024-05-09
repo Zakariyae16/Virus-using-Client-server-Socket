@@ -16,6 +16,10 @@ public class Reservation {
         this.dateReservation = dateReservation;
     }
 
+    public Reservation() {
+
+    }
+
     // Getters and setters
     public int getIdReservation() {
         return idReservation;

@@ -26,6 +26,10 @@ public class User {
         this.dateNaissance = dateNaissance;
     }
 
+    public User() {
+
+    }
+
     // Getters and setters
     public int getUserID() {
         return userID;

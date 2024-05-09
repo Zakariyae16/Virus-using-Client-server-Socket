@@ -16,6 +16,10 @@ public class Livre {
         this.estDisponible = estDisponible;
     }
 
+    public Livre() {
+
+    }
+
     // Getters and setters
     public int getIdLivre() {
         return idLivre;
