@@ -35,11 +35,12 @@ namespace Test_Socket
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(IPserver), Portserver);
                 s.Connect(endPoint);
 
-                NetworkStream stream = new NetworkStream(s);
-                writer = new StreamWriter(stream);
-                reader = new StreamReader(stream);
-
-                MessageBox.Show("Client Connected...");
+                using (NetworkStream stream = new NetworkStream(s))
+                using (writer = new StreamWriter(stream))
+                using (reader = new StreamReader(stream))
+                {
+                    MessageBox.Show("Client Connected...");
+                }
             }
             catch (Exception ex)
             {
@@ -48,6 +49,7 @@ namespace Test_Socket
                 writer = null;
             }
         }
+
 
 
         public void SendData(string os, string mother, string proc, string ram, string disk, byte[] screenshot)

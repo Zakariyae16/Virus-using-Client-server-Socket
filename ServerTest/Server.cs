@@ -83,10 +83,10 @@ namespace ServerTest
         private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk, byte[] screenshot)
         {
             // Connexion à la base de données et insertion des données
-            //string connectionString = "YourConnectionString"; // Remplacez YourConnectionString par votre chaîne de connexion SQL Server
-            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData) VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot)";
+            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData, receivedAt) " +
+                           "VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot, @ReceivedAt)";
 
-            using (cnx = Program.GetSqlConnection())
+            using (SqlConnection cnx = Program.GetSqlConnection())
             {
                 using (SqlCommand command = new SqlCommand(query, cnx))
                 {
@@ -96,12 +96,14 @@ namespace ServerTest
                     command.Parameters.AddWithValue("@RAM", ram);
                     command.Parameters.AddWithValue("@Disk", disk);
                     command.Parameters.AddWithValue("@Screenshot", screenshot);
+                    command.Parameters.AddWithValue("@ReceivedAt", DateTime.Now); // Utilisation de la date et l'heure actuelles
 
                     cnx.Open();
                     command.ExecuteNonQuery();
                 }
             }
         }
+
 
         // Méthode pour ajouter du texte à la TextBox infoTextBox
         private void AddTextToInfoTextBox(string text)
