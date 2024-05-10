@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "HlbKbRcSbY+xMKvkuI4yKqxR7b2LUU6rYc8XDh3oZ7QiKSDBmK0qmVvAoI+LrU6wVcoaPzxS+ZwiviA2S7nJVw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\Project_C#\\Test_Socket\\Test_Socket.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Lenovo\\.nuget\\packages\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\system.management\\8.0.0\\system.management.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
