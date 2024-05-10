@@ -48,7 +48,6 @@ namespace ServerTest
         {
             NetworkStream ns = new NetworkStream(clientSocket);
             StreamReader reader = new StreamReader(ns);
-            StreamWriter writer = new StreamWriter(ns);
 
             try
             {
@@ -59,17 +58,15 @@ namespace ServerTest
                 string ram = reader.ReadLine();
                 string disk = reader.ReadLine();
 
-                // Stocker les données dans la base de données
-                InsertDataIntoDatabase(os, motherboard, processor, ram, disk);
-
                 // Lire la capture d'écran envoyée par le client
                 string screenshotBase64 = reader.ReadLine();
-                if (!string.IsNullOrEmpty(screenshotBase64))
-                {
-                    byte[] screenshot = Convert.FromBase64String(screenshotBase64);
-                    // Traitez l'image capturée ici
-                    MessageBox.Show("Capture d'écran reçue du client.");
-                }
+                byte[] screenshot = Convert.FromBase64String(screenshotBase64);
+
+                // Stocker les données dans la base de données
+                InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot);
+
+                MessageBox.Show("Données reçues et stockées dans la base de données.");
+
             }
             catch (Exception ex)
             {
@@ -78,19 +75,18 @@ namespace ServerTest
             finally
             {
                 reader.Close();
-                writer.Close();
                 ns.Close();
                 clientSocket.Close();
             }
         }
 
-        private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk)
+        private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk, byte[] screenshot)
         {
             // Connexion à la base de données et insertion des données
-            string connectionString = "YourConnectionString"; // Remplacez YourConnectionString par votre chaîne de connexion SQL Server
-            string query = "INSERT INTO YourTableName (OS, Motherboard, Processor, RAM, Disk) VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk)";
+            //string connectionString = "YourConnectionString"; // Remplacez YourConnectionString par votre chaîne de connexion SQL Server
+            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData) VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot)";
 
-            using (cnx = new SqlConnection(connectionString))
+            using (cnx = Program.GetSqlConnection())
             {
                 using (SqlCommand command = new SqlCommand(query, cnx))
                 {
@@ -99,6 +95,7 @@ namespace ServerTest
                     command.Parameters.AddWithValue("@Processor", processor);
                     command.Parameters.AddWithValue("@RAM", ram);
                     command.Parameters.AddWithValue("@Disk", disk);
+                    command.Parameters.AddWithValue("@Screenshot", screenshot);
 
                     cnx.Open();
                     command.ExecuteNonQuery();

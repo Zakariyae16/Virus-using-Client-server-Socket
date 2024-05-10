@@ -18,6 +18,7 @@ namespace Test_Socket
 
         private StreamWriter writer;
         private StreamReader reader;
+        private Socket s;
 
         public ClientCollecte(string IPserver, int Portserver)
         {
@@ -26,27 +27,39 @@ namespace Test_Socket
             ConnectToServer();
         }
 
-        private void ConnectToServer()
+        public void ConnectToServer()
         {
             try
             {
-                TcpClient client = new TcpClient();
-                client.Connect(IPAddress.Parse(IPserver), Portserver);
-                NetworkStream stream = client.GetStream();
+                s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(IPserver), Portserver);
+                s.Connect(endPoint);
+
+                NetworkStream stream = new NetworkStream(s);
                 writer = new StreamWriter(stream);
                 reader = new StreamReader(stream);
+
                 MessageBox.Show("Client Connected...");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erreur lors de la connexion au serveur : " + ex.Message);
+                // Assurez-vous que writer est initialisé à null en cas d'échec de la connexion
+                writer = null;
             }
         }
+
 
         public void SendData(string os, string mother, string proc, string ram, string disk, byte[] screenshot)
         {
             try
             {
+                if (writer == null)
+                {
+                    MessageBox.Show("La connexion au serveur n'est pas établie.");
+                    return;
+                }
+
                 // Écrire les données texte dans le flux de sortie
                 writer.WriteLine(os);
                 writer.WriteLine(mother);

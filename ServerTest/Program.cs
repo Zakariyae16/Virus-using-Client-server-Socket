@@ -19,7 +19,7 @@ namespace ServerTest
         public static SqlConnection GetSqlConnection()
         {
             SqlConnection cnx;
-            cnx = new SqlConnection(@"SERVER=.\SQLEXPRESS ; DATABASE = Socketdb2;INTEGRATED SECURITY=TRUE");
+            cnx = new SqlConnection(@"SERVER=.\SQLEXPRESS ; DATABASE = socketdb2;INTEGRATED SECURITY=TRUE");
             return cnx;
         }
     }
