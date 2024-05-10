@@ -18,7 +18,7 @@ public class LivreDaoImp implements LivreDao {
         cnx = ConnectionDB.getConnection();
     }
     @Override
-    public Livre getLivreById(int id) {
+    public Livre getById(int id) {
         String strQuery = "SELECT * FROM livres WHERE ID_LIVRE = ?";
         try {
             ps = cnx.prepareStatement(strQuery);
@@ -40,7 +40,7 @@ public class LivreDaoImp implements LivreDao {
     }
 
     @Override
-    public List<Livre> getAllLivres() {
+    public List<Livre> getAll() {
         List<Livre> livres = new ArrayList<>();
         String strQuery = "SELECT * FROM livres";
         try {
@@ -62,7 +62,7 @@ public class LivreDaoImp implements LivreDao {
     }
 
     @Override
-    public void addLivre(Livre livre) {
+    public void add(Livre livre) {
         try {
             String strQuery = "INSERT INTO livres(ISBN, TITRE, AUTEUR, EST_DISPONIBLE) VALUES (?, ?, ?, ?)";
             ps = cnx.prepareStatement(strQuery);
@@ -77,7 +77,7 @@ public class LivreDaoImp implements LivreDao {
     }
 
     @Override
-    public void updateLivre(Livre livre) {
+    public void update(Livre livre) {
         String strQuery = "UPDATE livres SET ISBN = ?, TITRE = ?, AUTEUR = ?, EST_DISPONIBLE = ? WHERE ID_LIVRE = ?";
         try {
             ps = cnx.prepareStatement(strQuery);
@@ -93,7 +93,7 @@ public class LivreDaoImp implements LivreDao {
     }
 
     @Override
-    public void deleteLivre(int id) {
+    public void delete(int id) {
         String strQuery = "DELETE FROM livres WHERE ID_LIVRE = ?";
         try {
             ps = cnx.prepareStatement(strQuery);

@@ -1,5 +1,5 @@
-<%@page language="java" contentType="text/html; charset=ISO-8859-1"
-        isELIgnored="false" pageEncoding="ISO-8859-1" %>
+<%@page language="java" contentType="text/html; charset=UTF-8"
+        isELIgnored="false" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!doctype html>
@@ -111,35 +111,37 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <button class="btn btn-sm btn-outline-success"><i data-feather="plus-circle"
+                    <a href="<c:url value='/entreprise/add'/>" class="btn btn-sm btn-outline-success"><i data-feather="plus-circle"
                                                                       class="text-success"></i>
-                        Ajouter une entreprise
-                    </button>
+                        Ajouter un livre
+                    </a>
                 </div>
             </div>
 
 
-            <h2>Liste des entreprises</h2>
+            <h2>Liste des livres</h2>
             <div class="table-responsive">
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
                         <th style="width:10%">ID</th>
-                        <th style="width:35%">Nom</th>
-                        <th style="width:35%">Adresse</th>
-                        <th style="width:20%">Action</th>
+                        <th style="width:35%">ISBN</th>
+                        <th style="width:35%">Titre</th>
+                        <th style="width:20%">Auteur</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>CapGemini</td>
-                        <td>Casablanca</td>
-                        <td>
-                            <a href="#" class="btn-sm btn-primary"> <span data-feather="edit"></span></a>
-                            <a href="#" class="btn-sm btn-danger"> <span data-feather="trash-2"></span></a>
-                        </td>
-                    </tr>
+                    <c:forEach items="${list}" var="l">
+                        <tr>
+                            <td>${l.idLivre}</td>
+                            <td>${l.isbn}</td>
+                            <td>${l.titre}</td>
+                            <td>${l.auteur}</td>
+
+
+                        </tr>
+                    </c:forEach>
+
                     </tbody>
                 </table>
             </div>

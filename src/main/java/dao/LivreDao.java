@@ -5,9 +5,9 @@ import models.Livre;
 import java.util.List;
 
 public interface LivreDao {
-    Livre getLivreById(int id);
-    List<Livre> getAllLivres();
-    void addLivre(Livre livre);
-    void updateLivre(Livre livre);
-    void deleteLivre(int id);
+    Livre getById(int id);
+    List<Livre> getAll();
+    void add(Livre livre);
+    void update(Livre livre);
+    void delete(int id);
 }
