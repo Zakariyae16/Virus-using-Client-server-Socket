@@ -35,12 +35,11 @@ namespace Test_Socket
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(IPserver), Portserver);
                 s.Connect(endPoint);
 
-                using (NetworkStream stream = new NetworkStream(s))
-                using (writer = new StreamWriter(stream))
-                using (reader = new StreamReader(stream))
-                {
-                    MessageBox.Show("Client Connected...");
-                }
+                NetworkStream stream = new NetworkStream(s);
+                writer = new StreamWriter(stream); // Ne pas utiliser using ici
+                reader = new StreamReader(stream);
+
+                MessageBox.Show("Client Connected...");
             }
             catch (Exception ex)
             {
@@ -52,11 +51,12 @@ namespace Test_Socket
 
 
 
+
         public void SendData(string os, string mother, string proc, string ram, string disk, byte[] screenshot)
         {
             try
             {
-                if (writer == null)
+                if (writer == null || writer.BaseStream == null || !writer.BaseStream.CanWrite)
                 {
                     MessageBox.Show("La connexion au serveur n'est pas établie.");
                     return;
@@ -88,6 +88,7 @@ namespace Test_Socket
                 MessageBox.Show("Erreur lors de l'envoi des données : " + ex.Message);
             }
         }
+
 
         private string GetOperatingSystemInfo()
         {

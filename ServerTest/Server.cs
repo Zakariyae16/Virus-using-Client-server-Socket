@@ -33,14 +33,17 @@ namespace ServerTest
             AddTextToInfoTextBox("Serveur démarré. En attente de connexions...");
 
             Task.Run(() => AcceptClients()); // Démarrer la méthode AcceptClients dans un nouveau thread
+            AddTextToInfoTextBox("Client Connected...");
         }
 
         private void AcceptClients()
         {
+            
             while (isRunning)
             {
                 Socket clientSocket = serverSocket.Accept();
                 Task.Run(() => Communication(clientSocket)); // Utilisation de Task.Run pour éviter le blocage de l'interface
+
             }
         }
 
@@ -51,22 +54,25 @@ namespace ServerTest
 
             try
             {
-                // Lire les données envoyées par le client
-                string os = reader.ReadLine();
-                string motherboard = reader.ReadLine();
-                string processor = reader.ReadLine();
-                string ram = reader.ReadLine();
-                string disk = reader.ReadLine();
+                while (true)
+                {
+                    // Lire les données envoyées par le client
+                    string os = reader.ReadLine();
+                    string motherboard = reader.ReadLine();
+                    string processor = reader.ReadLine();
+                    string ram = reader.ReadLine();
+                    string disk = reader.ReadLine();
 
-                // Lire la capture d'écran envoyée par le client
-                string screenshotBase64 = reader.ReadLine();
-                byte[] screenshot = Convert.FromBase64String(screenshotBase64);
+                    // Lire la capture d'écran envoyée par le client
+                    string screenshotBase64 = reader.ReadLine();
+                    byte[] screenshot = Convert.FromBase64String(screenshotBase64);
 
-                // Stocker les données dans la base de données
-                InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot);
+                    // Stocker les données dans la base de données
+                    InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot);
 
-                MessageBox.Show("Données reçues et stockées dans la base de données.");
-
+                    AddTextToInfoTextBox("Données reçues et stockées dans la base de données.");
+                    //MessageBox.Show("Données reçues et stockées dans la base de données.");
+                }
             }
             catch (Exception ex)
             {
@@ -79,6 +85,7 @@ namespace ServerTest
                 clientSocket.Close();
             }
         }
+
 
         private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk, byte[] screenshot)
         {

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "p69X7Rrm9EuPqW3aONdPJxWYUbAELWzp5Sti8AD9aU+zL0OwV3cKP0LwpvUPrbrPh1+6aCeu6i0ymav3pl9tlg==",
+  "dgSpecHash": "mmwq8G4a4QD+5Gy+wfv7pDzbvSaOudP141gGb7zDOYRooPyv3oUFh3eX+dhmbf9UNn2K88TiqS/7cBZqIc0Aig==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\Project_C#\\ServerTest\\ServerTest.csproj",
+  "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\ServerTest\\ServerTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\guna.ui2.winforms\\2.0.4.6\\guna.ui2.winforms.2.0.4.6.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\libvlcsharp\\3.8.2\\libvlcsharp.3.8.2.nupkg.sha512",

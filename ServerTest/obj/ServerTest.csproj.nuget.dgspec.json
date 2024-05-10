@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\Desktop\\Project_C#\\ServerTest\\ServerTest.csproj": {}
+    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\ServerTest\\ServerTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\Desktop\\Project_C#\\ServerTest\\ServerTest.csproj": {
+    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\ServerTest\\ServerTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\Project_C#\\ServerTest\\ServerTest.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\ServerTest\\ServerTest.csproj",
         "projectName": "ServerTest",
-        "projectPath": "C:\\Users\\Lenovo\\Desktop\\Project_C#\\ServerTest\\ServerTest.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\ServerTest\\ServerTest.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Desktop\\Project_C#\\ServerTest\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\ServerTest\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
