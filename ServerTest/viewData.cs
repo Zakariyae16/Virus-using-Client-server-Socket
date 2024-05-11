@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
-using TheArtOfDevHtmlRenderer.Adapters;
-using static System.Windows.Forms.AxHost;
 
 namespace ServerTest
 {
@@ -18,13 +12,10 @@ namespace ServerTest
         private static viewData view;
 
         SqlConnection cnx;
-        SqlCommand cmd;
         SqlDataAdapter adapter;
-        BindingManagerBase bindingManager;
-        System.Data.DataTable dataTable;
-        private DataView dataView;
-        private int idPhoto;
+        DataTable dataTable;
         SqlDataReader reader;
+
         public static viewData Instance
         {
             get
@@ -36,6 +27,7 @@ namespace ServerTest
                 return view;
             }
         }
+
         public viewData()
         {
             InitializeComponent();
@@ -43,151 +35,99 @@ namespace ServerTest
 
         private void viewData_Load(object sender, EventArgs e)
         {
-
             try
             {
+                // Connexion à la base de données
                 cnx = Program.GetSqlConnection();
                 cnx.Open();
+
+                // Récupération des données depuis la base de données
                 adapter = new SqlDataAdapter("SELECT * FROM receivedData1", cnx);
-                dataTable = new System.Data.DataTable();
-
-
-                // Remplir le DataTable avec les données de la base de données
+                dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
-                //Renommer les colonnes dans le DataTable(remplacement des noms)
-                dataTable.Columns[0].ColumnName = "ID";
+                // Renommer les colonnes dans le DataTable (remplacement des noms)
+                dataTable.Columns[0].ColumnName = "ID Data";
                 dataTable.Columns[1].ColumnName = "Client ID";
-                dataTable.Columns[2].ColumnName = "Hardware";
-                dataTable.Columns[3].ColumnName = "Capture D'ecran";
-                dataTable.Columns[4].ColumnName = "Camera";
-                dataTable.Columns[5].ColumnName = "Time";
+                dataTable.Columns[2].ColumnName = "OS";
+                dataTable.Columns[3].ColumnName = "MotherBoard";
+                dataTable.Columns[4].ColumnName = "Procsseur";
+                dataTable.Columns[5].ColumnName = "RAM";
+                dataTable.Columns[6].ColumnName = "Hard Disk";
+                dataTable.Columns[8].ColumnName = "Reiceved At";
 
                 // Lier le DataTable au DataGridView
                 data_dgv.DataSource = dataTable;
+
+                // Cacher la colonne 7 (Capture d'écran)
+                data_dgv.Columns[7].Visible = false;
+
                 cnx.Close();
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erreur lors du chargement des données : " + ex.Message);
             }
-
-
-            data_dgv.Refresh();
-
+        }
 
 
 
+        private void data_dgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
-            string selectQuery = "SELECT captureData FROM receivedData1 WHERE captureData = 3";
+        }
 
-            // Création de la connexion à la base de données
-            using (cnx = Program.GetSqlConnection())
+        private void data_dgv_CellClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
             {
-                cnx.Open();
+                // Récupération de l'ID de la photo depuis la colonne 0
+                int idPhoto = Convert.ToInt32(data_dgv.Rows[e.RowIndex].Cells[0].Value);
 
-                // Création de la commande SQL
-                using (cmd = new SqlCommand(selectQuery, cnx))
+                // Récupération de l'image correspondant à l'ID de la photo
+                string selectQuery = "SELECT captureData FROM receivedData1 WHERE idData = @idPhoto";
+
+                // Connexion à la base de données
+                using (cnx = Program.GetSqlConnection())
                 {
-                    // Paramètre pour l'ID
-                    //cmd.Parameters.AddWithValue("@Id_livre", idPhoto);
+                    cnx.Open();
 
-                    // Exécution de la commande et récupération du résultat
-                    using (reader = cmd.ExecuteReader())
+                    // Création de la commande SQL
+                    using (SqlCommand cmd = new SqlCommand(selectQuery, cnx))
                     {
-                        if (reader.Read())
+                        // Paramètre pour l'ID de la photo
+                        cmd.Parameters.AddWithValue("@idPhoto", idPhoto);
+
+                        // Exécution de la commande et récupération du résultat
+                        using (reader = cmd.ExecuteReader())
                         {
-                            // Vérification si la colonne ImageColumn n'est pas NULL
-                            if (!reader.IsDBNull(0))
+                            if (reader.Read())
                             {
-                                // Récupération des données binaires de l'image
-                                byte[] imageBytes = (byte[])reader[0];
+                                // Vérification si la colonne captureData n'est pas NULL
+                                if (!reader.IsDBNull(0))
+                                {
+                                    // Récupération des données binaires de l'image
+                                    byte[] imageBytes = (byte[])reader[0];
 
-                                // Conversion des données binaires en image
-                                Image image = ByteArrayToImage(imageBytes);
+                                    // Conversion des données binaires en image
+                                    using (MemoryStream ms = new MemoryStream(imageBytes))
+                                    {
+                                        Image image = Image.FromStream(ms);
 
-                                // Affichage de l'image dans un PictureBox
-                                imgbox.Image = image;
+                                        // Affichage de l'image dans un PictureBox
+                                        imgbox.Image = image;
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-
         }
 
         private void btn_refresh_Click(object sender, EventArgs e)
         {
             viewData_Load(sender, e);
-        }
-
-        private void data_dgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            {
-                // Sélectionner toute la ligne
-                data_dgv.Rows[e.RowIndex].Selected = true;
-            }
-            // Assurez-vous que la cellule cliquée est dans la colonne de CheckBox
-            if (e.ColumnIndex == data_dgv.Columns[0].Index && e.RowIndex >= 0)
-            {
-                // Décochez toutes les autres cases à cocher dans la colonne
-                foreach (DataGridViewRow row in data_dgv.Rows)
-                {
-                    DataGridViewCheckBoxCell checkBoxCell = row.Cells[0] as DataGridViewCheckBoxCell;
-
-                    // Décochez les autres cases à cocher
-                    if (row.Index != e.RowIndex)
-                    {
-                        checkBoxCell.Value = false;
-                    }
-                }
-            }
-
-            string selectQuery = "SELECT captureData FROM receivedData1 WHERE captureData = @idPhoto";
-
-            // Création de la connexion à la base de données
-            using (cnx = Program.GetSqlConnection())
-            {
-                cnx.Open();
-
-                // Création de la commande SQL
-                using (cmd = new SqlCommand(selectQuery, cnx))
-                {
-                    // Paramètre pour l'ID
-                    cmd.Parameters.AddWithValue("@Id_livre", idPhoto);
-
-                    // Exécution de la commande et récupération du résultat
-                    using (reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            // Vérification si la colonne ImageColumn n'est pas NULL
-                            if (!reader.IsDBNull(0))
-                            {
-                                // Récupération des données binaires de l'image
-                                byte[] imageBytes = (byte[])reader[0];
-
-                                // Conversion des données binaires en image
-                                Image image = ByteArrayToImage(imageBytes);
-
-                                // Affichage de l'image dans un PictureBox
-                                imgbox.Image = image;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private Image ByteArrayToImage(byte[] byteArray)
-        {
-            using (MemoryStream ms = new MemoryStream(byteArray))
-            {
-                return Image.FromStream(ms);
-            }
         }
     }
 }

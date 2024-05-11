@@ -28,14 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             panel1 = new Panel();
+            guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             Data_btn = new Guna.UI2.WinForms.Guna2Button();
             pnl_slide = new Panel();
             ServerStat_btn = new Guna.UI2.WinForms.Guna2Button();
@@ -46,7 +47,6 @@
             btn_exit = new Button();
             btn_minimiser = new Button();
             pnl_tous = new Panel();
-            guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -64,8 +64,31 @@
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(250, 607);
+            panel1.Size = new Size(250, 639);
             panel1.TabIndex = 0;
+            // 
+            // guna2Button1
+            // 
+            guna2Button1.Animated = true;
+            guna2Button1.BorderRadius = 22;
+            guna2Button1.Cursor = Cursors.Hand;
+            guna2Button1.CustomizableEdges = customizableEdges1;
+            guna2Button1.DisabledState.BorderColor = Color.DarkGray;
+            guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
+            guna2Button1.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            guna2Button1.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            guna2Button1.FillColor = Color.White;
+            guna2Button1.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            guna2Button1.ForeColor = SystemColors.ActiveCaptionText;
+            guna2Button1.Image = (Image)resources.GetObject("guna2Button1.Image");
+            guna2Button1.ImageOffset = new Point(-13, 0);
+            guna2Button1.ImageSize = new Size(45, 45);
+            guna2Button1.Location = new Point(19, 361);
+            guna2Button1.Name = "guna2Button1";
+            guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            guna2Button1.Size = new Size(244, 64);
+            guna2Button1.TabIndex = 10;
+            guna2Button1.Text = "Outils";
             // 
             // Data_btn
             // 
@@ -159,7 +182,7 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(250, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(838, 23);
+            panel2.Size = new Size(957, 23);
             panel2.TabIndex = 1;
             // 
             // btn_exit
@@ -169,7 +192,7 @@
             btn_exit.FlatStyle = FlatStyle.Flat;
             btn_exit.Font = new Font("Verdana", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
             btn_exit.ForeColor = SystemColors.Desktop;
-            btn_exit.Location = new Point(1048, 24);
+            btn_exit.Location = new Point(1167, 29);
             btn_exit.Name = "btn_exit";
             btn_exit.Size = new Size(40, 40);
             btn_exit.TabIndex = 6;
@@ -182,7 +205,7 @@
             btn_minimiser.FlatAppearance.BorderSize = 0;
             btn_minimiser.FlatStyle = FlatStyle.Flat;
             btn_minimiser.Image = (Image)resources.GetObject("btn_minimiser.Image");
-            btn_minimiser.Location = new Point(1004, 24);
+            btn_minimiser.Location = new Point(1123, 29);
             btn_minimiser.Name = "btn_minimiser";
             btn_minimiser.Size = new Size(38, 40);
             btn_minimiser.TabIndex = 7;
@@ -193,39 +216,16 @@
             // pnl_tous
             // 
             pnl_tous.Dock = DockStyle.Bottom;
-            pnl_tous.Location = new Point(250, 70);
+            pnl_tous.Location = new Point(250, 75);
             pnl_tous.Name = "pnl_tous";
-            pnl_tous.Size = new Size(838, 537);
+            pnl_tous.Size = new Size(957, 564);
             pnl_tous.TabIndex = 8;
-            // 
-            // guna2Button1
-            // 
-            guna2Button1.Animated = true;
-            guna2Button1.BorderRadius = 22;
-            guna2Button1.Cursor = Cursors.Hand;
-            guna2Button1.CustomizableEdges = customizableEdges1;
-            guna2Button1.DisabledState.BorderColor = Color.DarkGray;
-            guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
-            guna2Button1.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            guna2Button1.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            guna2Button1.FillColor = Color.White;
-            guna2Button1.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            guna2Button1.ForeColor = SystemColors.ActiveCaptionText;
-            guna2Button1.Image = (Image)resources.GetObject("guna2Button1.Image");
-            guna2Button1.ImageOffset = new Point(-13, 0);
-            guna2Button1.ImageSize = new Size(45, 45);
-            guna2Button1.Location = new Point(19, 361);
-            guna2Button1.Name = "guna2Button1";
-            guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            guna2Button1.Size = new Size(244, 64);
-            guna2Button1.TabIndex = 10;
-            guna2Button1.Text = "Outils";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1088, 607);
+            ClientSize = new Size(1207, 639);
             Controls.Add(pnl_tous);
             Controls.Add(btn_minimiser);
             Controls.Add(btn_exit);

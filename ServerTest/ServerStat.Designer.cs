@@ -28,21 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerStat));
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             label1 = new Label();
             serverIp_txt = new Guna.UI2.WinForms.Guna2TextBox();
             info_txtbox = new TextBox();
             label2 = new Label();
             ServerPort_txt = new Guna.UI2.WinForms.Guna2TextBox();
-            label3 = new Label();
-            textBox2 = new TextBox();
             Start_btn = new Guna.UI2.WinForms.Guna2ImageButton();
             Stop_btn = new Guna.UI2.WinForms.Guna2ImageButton();
             status_imgbx = new Guna.UI2.WinForms.Guna2CirclePictureBox();
@@ -55,7 +53,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Century Gothic", 10.8F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(40, 46);
+            label1.Location = new Point(131, 46);
             label1.Name = "label1";
             label1.Size = new Size(87, 22);
             label1.TabIndex = 0;
@@ -63,7 +61,7 @@
             // 
             // serverIp_txt
             // 
-            serverIp_txt.CustomizableEdges = customizableEdges8;
+            serverIp_txt.CustomizableEdges = customizableEdges1;
             serverIp_txt.DefaultText = "127.0.0.1";
             serverIp_txt.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             serverIp_txt.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -73,12 +71,12 @@
             serverIp_txt.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             serverIp_txt.ForeColor = Color.Black;
             serverIp_txt.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            serverIp_txt.Location = new Point(133, 36);
+            serverIp_txt.Location = new Point(251, 36);
             serverIp_txt.Name = "serverIp_txt";
             serverIp_txt.PasswordChar = '\0';
             serverIp_txt.PlaceholderText = "";
             serverIp_txt.SelectedText = "";
-            serverIp_txt.ShadowDecoration.CustomizableEdges = customizableEdges9;
+            serverIp_txt.ShadowDecoration.CustomizableEdges = customizableEdges2;
             serverIp_txt.Size = new Size(175, 40);
             serverIp_txt.TabIndex = 1;
             // 
@@ -89,14 +87,14 @@
             info_txtbox.Name = "info_txtbox";
             info_txtbox.ReadOnly = true;
             info_txtbox.ScrollBars = ScrollBars.Vertical;
-            info_txtbox.Size = new Size(411, 290);
+            info_txtbox.Size = new Size(621, 290);
             info_txtbox.TabIndex = 2;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Century Gothic", 10.8F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(314, 46);
+            label2.Location = new Point(448, 46);
             label2.Name = "label2";
             label2.Size = new Size(103, 22);
             label2.TabIndex = 3;
@@ -104,7 +102,7 @@
             // 
             // ServerPort_txt
             // 
-            ServerPort_txt.CustomizableEdges = customizableEdges10;
+            ServerPort_txt.CustomizableEdges = customizableEdges3;
             ServerPort_txt.DefaultText = "1616";
             ServerPort_txt.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             ServerPort_txt.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -114,35 +112,14 @@
             ServerPort_txt.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             ServerPort_txt.ForeColor = Color.Black;
             ServerPort_txt.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            ServerPort_txt.Location = new Point(423, 36);
+            ServerPort_txt.Location = new Point(562, 36);
             ServerPort_txt.Name = "ServerPort_txt";
             ServerPort_txt.PasswordChar = '\0';
             ServerPort_txt.PlaceholderText = "";
             ServerPort_txt.SelectedText = "";
-            ServerPort_txt.ShadowDecoration.CustomizableEdges = customizableEdges11;
+            ServerPort_txt.ShadowDecoration.CustomizableEdges = customizableEdges4;
             ServerPort_txt.Size = new Size(100, 40);
             ServerPort_txt.TabIndex = 4;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Century Gothic", 10.8F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(634, 61);
-            label3.Name = "label3";
-            label3.Size = new Size(85, 22);
-            label3.TabIndex = 5;
-            label3.Text = "Client IP ";
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(552, 92);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.ReadOnly = true;
-            textBox2.ScrollBars = ScrollBars.Vertical;
-            textBox2.Size = new Size(246, 290);
-            textBox2.TabIndex = 6;
-            textBox2.Text = "List Client Ip :";
             // 
             // Start_btn
             // 
@@ -155,7 +132,7 @@
             Start_btn.Location = new Point(162, 425);
             Start_btn.Name = "Start_btn";
             Start_btn.PressedState.ImageSize = new Size(64, 64);
-            Start_btn.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            Start_btn.ShadowDecoration.CustomizableEdges = customizableEdges5;
             Start_btn.Size = new Size(43, 42);
             Start_btn.TabIndex = 7;
             Start_btn.Click += Start_btn_Click;
@@ -171,7 +148,7 @@
             Stop_btn.Location = new Point(233, 425);
             Stop_btn.Name = "Stop_btn";
             Stop_btn.PressedState.ImageSize = new Size(64, 64);
-            Stop_btn.ShadowDecoration.CustomizableEdges = customizableEdges13;
+            Stop_btn.ShadowDecoration.CustomizableEdges = customizableEdges6;
             Stop_btn.Size = new Size(43, 42);
             Stop_btn.TabIndex = 8;
             Stop_btn.Click += Stop_btn_Click;
@@ -182,7 +159,7 @@
             status_imgbx.ImageRotate = 0F;
             status_imgbx.Location = new Point(518, 437);
             status_imgbx.Name = "status_imgbx";
-            status_imgbx.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            status_imgbx.ShadowDecoration.CustomizableEdges = customizableEdges7;
             status_imgbx.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             status_imgbx.Size = new Size(33, 30);
             status_imgbx.TabIndex = 9;
@@ -217,8 +194,6 @@
             Controls.Add(status_imgbx);
             Controls.Add(Stop_btn);
             Controls.Add(Start_btn);
-            Controls.Add(textBox2);
-            Controls.Add(label3);
             Controls.Add(ServerPort_txt);
             Controls.Add(label2);
             Controls.Add(info_txtbox);
@@ -239,8 +214,6 @@
         private TextBox info_txtbox;
         private Label label2;
         private Guna.UI2.WinForms.Guna2TextBox ServerPort_txt;
-        private Label label3;
-        private TextBox textBox2;
         private Guna.UI2.WinForms.Guna2ImageButton Start_btn;
         private Guna.UI2.WinForms.Guna2ImageButton Stop_btn;
         private Guna.UI2.WinForms.Guna2CirclePictureBox status_imgbx;

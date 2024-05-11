@@ -16,6 +16,7 @@ namespace ServerTest
         private bool isRunning;
         private TextBox infoTextBox;
         private SqlConnection cnx;
+        private string currentTime;
 
         public Server(int port, TextBox textBox)
         {
@@ -51,6 +52,7 @@ namespace ServerTest
         {
             NetworkStream ns = new NetworkStream(clientSocket);
             StreamReader reader = new StreamReader(ns);
+            int i = 0;
 
             try
             {
@@ -69,8 +71,9 @@ namespace ServerTest
 
                     // Stocker les données dans la base de données
                     InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot);
-
-                    AddTextToInfoTextBox("Données reçues et stockées dans la base de données.");
+                    i++;
+                    currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    AddTextToInfoTextBox(" Les Données "+ i + " reçues et stockées dans la base de données a " + currentTime);
                     //MessageBox.Show("Données reçues et stockées dans la base de données.");
                 }
             }
