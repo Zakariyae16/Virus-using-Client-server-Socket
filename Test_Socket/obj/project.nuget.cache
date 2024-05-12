@@ -1,11 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "oPmt4q8hLwSvvMLvqAFxGe5wHE0DE/xKUsOWjN5sgAi+1wjJX9T09ji2Jbs+xaIyoPw2nAPaMF2cmFJLMWK1Wg==",
+  "dgSpecHash": "1Gp7nKNsLK2bt3vVpaFCsuzwPz4n+t25ploFVaDqi9yWZPxUh+5fZX4n9GIDtahpdu6qq1lHK7KPFq1Hr99BBQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\Test_Socket\\Test_Socket.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.4\\microsoft.data.sqlite.core.8.0.4.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\sqlitepclraw.core\\2.1.6\\sqlitepclraw.core.2.1.6.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\stub.system.data.sqlite.core.netstandard\\1.0.118\\stub.system.data.sqlite.core.netstandard.1.0.118.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",
-    "C:\\Users\\Lenovo\\.nuget\\packages\\system.management\\8.0.0\\system.management.8.0.0.nupkg.sha512"
+    "C:\\Users\\Lenovo\\.nuget\\packages\\system.data.sqlite.core\\1.0.118\\system.data.sqlite.core.1.0.118.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\system.management\\8.0.0\\system.management.8.0.0.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
   ],
   "logs": []
 }

