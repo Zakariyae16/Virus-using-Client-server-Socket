@@ -54,7 +54,7 @@ namespace ServerTest
                 st_label.Text = valeur2;
 
             }
-            server = new Server(1616, info_txtbox);
+            server = new Server(1616,5656, info_txtbox);
             server.Start();
         }
 

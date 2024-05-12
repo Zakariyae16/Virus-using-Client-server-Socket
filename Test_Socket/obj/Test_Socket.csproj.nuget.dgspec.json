@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\Test_Socket\\Test_Socket.csproj": {}
+    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\Test_Socket\\Test_Socket.csproj": {
+    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\Test_Socket\\Test_Socket.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj",
         "projectName": "Test_Socket",
-        "projectPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\Test_Socket\\Test_Socket.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-server\\Test_Socket\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,14 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "dependencies": {
+            "AForge.Video": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "AForge.Video.DirectShow": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
             "Microsoft.Data.Sqlite.Core": {
               "target": "Package",
               "version": "[8.0.4, )"

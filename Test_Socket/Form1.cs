@@ -9,7 +9,7 @@ namespace Test_Socket
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ClientCollecte client = new ClientCollecte("127.0.0.1", 1616);
+            ClientCollecte client = new ClientCollecte("127.0.0.1", 1616,5656);
 
             while (true)
             {
