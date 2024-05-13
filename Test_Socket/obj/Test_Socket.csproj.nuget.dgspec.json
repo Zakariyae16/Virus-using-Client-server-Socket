@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj": {}
+    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-serv\\Test_Socket\\Test_Socket.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj": {
+    "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-serv\\Test_Socket\\Test_Socket.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-serv\\Test_Socket\\Test_Socket.csproj",
         "projectName": "Test_Socket",
-        "projectPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-serv\\Test_Socket\\Test_Socket.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-serv\\Test_Socket\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",

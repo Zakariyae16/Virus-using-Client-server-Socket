@@ -21,6 +21,8 @@ namespace ServerTest
         private SqlConnection cnx;
         private string currentTime;
 
+        private VideoServer videoServer;
+
         public Server(int port, int videoPort, TextBox textBox)
         {
             textSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -33,6 +35,9 @@ namespace ServerTest
 
             isRunning = false;
             infoTextBox = textBox;
+
+            // Initialiser le serveur vidéo
+            videoServer = new VideoServer();
         }
 
         public void Start()
@@ -41,6 +46,8 @@ namespace ServerTest
             textSocket.Listen(5);
             videoSocket.Listen(5);
             AddTextToInfoTextBox("Serveur démarré. En attente de connexions...");
+
+            Task.Run(() => videoServer.StartServerAsync(80));
 
             Task.Run(() => AcceptTextClients()); // Démarrer la méthode AcceptClients dans un nouveau thread
             Task.Run(() => AcceptVideoClients());

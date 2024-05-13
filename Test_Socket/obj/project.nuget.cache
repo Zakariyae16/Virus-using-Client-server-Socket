@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "t0oHer3gw6Pvkxyopmdq5EZHMKWyOgkeXMKpKrghkS7veSvAA8Q2mR3Hgh06Gexl1mo/gHYG24br2jF4g8pVLw==",
+  "dgSpecHash": "9kSHMq17w5mei2+Cf08Tf+ZaCoM71ZhZyzJbO9w4hkfggI+3Ay0zCnuTfS5Mo1V/vNebkbtYyWCflL315e1JGg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-ser\\Test_Socket\\Test_Socket.csproj",
+  "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-serv\\Test_Socket\\Test_Socket.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\aforge\\2.2.5\\aforge.2.2.5.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\aforge.video\\2.2.5\\aforge.video.2.2.5.nupkg.sha512",
