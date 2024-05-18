@@ -87,7 +87,7 @@
             info_txtbox.Name = "info_txtbox";
             info_txtbox.ReadOnly = true;
             info_txtbox.ScrollBars = ScrollBars.Vertical;
-            info_txtbox.Size = new Size(621, 290);
+            info_txtbox.Size = new Size(661, 290);
             info_txtbox.TabIndex = 2;
             // 
             // label2

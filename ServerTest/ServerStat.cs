@@ -43,18 +43,15 @@ namespace ServerTest
 
         private void Start_btn_Click(object sender, EventArgs e)
         {
-
-            //int port = int.Parse(ServerPort_txt.Text);
-
-            if (Start_btn.Enabled == true)
+            if (Start_btn.Enabled)
             {
                 Start_btn.Enabled = false;
                 Stop_btn.Enabled = true;
-                //status_imgbx.Image = Image.FromFile(@"C:\Users\Lenovo\Desktop\Project_C#\ServerTest\cercle_vert.png");
                 st_label.Text = valeur2;
-
             }
-            server = new Server(1616,5656, info_txtbox);
+
+            Outils outilsControl = Outils.Instance; // Utiliser l'instance existante de Outils
+            server = new Server(1616, 5656, info_txtbox, outilsControl);
             server.Start();
         }
 

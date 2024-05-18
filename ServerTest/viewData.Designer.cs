@@ -65,12 +65,12 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             data_dgv.DefaultCellStyle = dataGridViewCellStyle3;
             data_dgv.GridColor = Color.FromArgb(231, 229, 255);
-            data_dgv.Location = new Point(22, 192);
+            data_dgv.Location = new Point(11, 180);
             data_dgv.Name = "data_dgv";
             data_dgv.RowHeadersVisible = false;
             data_dgv.RowHeadersWidth = 51;
             data_dgv.RowTemplate.Height = 29;
-            data_dgv.Size = new Size(861, 351);
+            data_dgv.Size = new Size(886, 314);
             data_dgv.TabIndex = 0;
             data_dgv.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             data_dgv.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -104,7 +104,7 @@
             btn_refresh.Image = (Image)resources.GetObject("btn_refresh.Image");
             btn_refresh.ImageOffset = new Point(0, 0);
             btn_refresh.ImageRotate = 0F;
-            btn_refresh.Location = new Point(889, 325);
+            btn_refresh.Location = new Point(665, 71);
             btn_refresh.Name = "btn_refresh";
             btn_refresh.PressedState.ImageSize = new Size(64, 64);
             btn_refresh.ShadowDecoration.CustomizableEdges = customizableEdges1;
@@ -115,7 +115,7 @@
             // imgbox
             // 
             imgbox.BackColor = Color.FromArgb(64, 64, 64);
-            imgbox.Location = new Point(256, 8);
+            imgbox.Location = new Point(201, 3);
             imgbox.Name = "imgbox";
             imgbox.Size = new Size(429, 171);
             imgbox.SizeMode = PictureBoxSizeMode.StretchImage;

