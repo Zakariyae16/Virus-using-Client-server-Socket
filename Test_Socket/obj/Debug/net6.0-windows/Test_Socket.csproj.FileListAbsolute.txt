@@ -130,3 +130,8 @@ C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\obj\Debug\net6.0-windows
 C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\obj\Debug\net6.0-windows\Test_Socket.pdb
 C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\obj\Debug\net6.0-windows\Test_Socket.genruntimeconfig.cache
 C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\obj\Debug\net6.0-windows\ref\Test_Socket.dll
+C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\bin\Debug\net6.0-windows\selenium-manager\linux\selenium-manager
+C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\bin\Debug\net6.0-windows\selenium-manager\macos\selenium-manager
+C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\bin\Debug\net6.0-windows\selenium-manager\windows\selenium-manager.exe
+C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
+C:\Users\Lenovo\Desktop\C-sharp-client-serv\Test_Socket\bin\Debug\net6.0-windows\WebDriver.dll

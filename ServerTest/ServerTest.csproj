@@ -13,6 +13,7 @@
     <PackageReference Include="LibVLCSharp" Version="3.8.2" />
     <PackageReference Include="MaterialSkin2DotNet" Version="1.1.2" />
     <PackageReference Include="MaterialSkinDataTable" Version="1.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 

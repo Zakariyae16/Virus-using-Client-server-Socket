@@ -54,8 +54,7 @@ namespace ServerTest
                 dataTable.Columns[4].ColumnName = "Procsseur";
                 dataTable.Columns[5].ColumnName = "RAM";
                 dataTable.Columns[6].ColumnName = "Hard Disk";
-                dataTable.Columns[8].ColumnName = "Cookies";
-                dataTable.Columns[9].ColumnName = "Reiceved At";
+                dataTable.Columns[8].ColumnName = "Reiceved At";
 
                 // Lier le DataTable au DataGridView
                 data_dgv.DataSource = dataTable;

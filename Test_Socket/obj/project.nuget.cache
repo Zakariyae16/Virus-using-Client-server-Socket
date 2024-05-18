@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9kSHMq17w5mei2+Cf08Tf+ZaCoM71ZhZyzJbO9w4hkfggI+3Ay0zCnuTfS5Mo1V/vNebkbtYyWCflL315e1JGg==",
+  "dgSpecHash": "k403KpkF+e4MjXErHp34UZoiLpNjd7TJTKswEangrKlHnhvFLN1jZDS7P9/B04EsO7uDLTy8PoLQ58Lp4cvPLg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\C-sharp-client-serv\\Test_Socket\\Test_Socket.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,9 @@
     "C:\\Users\\Lenovo\\.nuget\\packages\\aforge.video\\2.2.5\\aforge.video.2.2.5.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\aforge.video.directshow\\2.2.5\\aforge.video.directshow.2.2.5.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.4\\microsoft.data.sqlite.core.8.0.4.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\selenium.webdriver\\4.21.0\\selenium.webdriver.4.21.0.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\selenium.webdriver.chromedriver\\125.0.6422.6000\\selenium.webdriver.chromedriver.125.0.6422.6000.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\sqlitepclraw.core\\2.1.6\\sqlitepclraw.core.2.1.6.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\stub.system.data.sqlite.core.netstandard\\1.0.118\\stub.system.data.sqlite.core.netstandard.1.0.118.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",

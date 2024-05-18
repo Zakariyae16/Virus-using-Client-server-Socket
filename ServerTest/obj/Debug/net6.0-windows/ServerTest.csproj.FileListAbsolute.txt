@@ -135,3 +135,4 @@ C:\Users\Lenovo\Desktop\C-sharp-client-serv\ServerTest\obj\Debug\net6.0-windows\
 C:\Users\Lenovo\Desktop\C-sharp-client-serv\ServerTest\obj\Debug\net6.0-windows\ServerTest.genruntimeconfig.cache
 C:\Users\Lenovo\Desktop\C-sharp-client-serv\ServerTest\obj\Debug\net6.0-windows\ref\ServerTest.dll
 C:\Users\Lenovo\Desktop\C-sharp-client-serv\ServerTest\obj\Debug\net6.0-windows\ServerTest.Outils.resources
+C:\Users\Lenovo\Desktop\C-sharp-client-serv\ServerTest\bin\Debug\net6.0-windows\Newtonsoft.Json.dll

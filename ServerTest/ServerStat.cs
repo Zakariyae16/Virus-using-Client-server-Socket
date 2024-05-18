@@ -51,7 +51,7 @@ namespace ServerTest
             }
 
             Outils outilsControl = Outils.Instance; // Utiliser l'instance existante de Outils
-            server = new Server(1616, 5656, info_txtbox, outilsControl);
+            server = new Server(1616, 5656,5050, info_txtbox, outilsControl);
             server.Start();
         }
 
